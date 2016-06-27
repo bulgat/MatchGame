@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="nameUser"></div>
+<div class="countPlayer"></div>
+<div class="matchGame"></div>
+
+
+
+
+
+
+
+<head runat="server">
+    <title>FirstAjax</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
+
+    <script type="text/javascript">
+
+        // Ввод имени пользователя при заходе в чат.
+        var _nameUser = prompt('Введите ваше имя:', localStorage["nameUser"]);
+        if (_nameUser == "" || _nameUser == null) {
+            _nameUser = "noname";
+        }
+
+        // Загоняем в кэш браузера.
+        localStorage["nameUser"] = _nameUser;
+
+        $('.nameUser').append("<h3>"+_nameUser+"</h3>");
+        saveUserName(_nameUser);
+        refresh();
+
+        // Обновить данные игровое поля и данных пользователя.
+        function refresh() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/AjaxLaunch",
+                data: param = "",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function success_Func(data, status) {
+                    var k = Array();
+
+                    for (var i = 0 ; i < data.sizeField; i++) {
+                        $(".matchGame").append("<br>");
+                        for (var j = 0 ; j < data.sizeField; j++) {
+                            $(".matchGame").append('<img src="../image/tile' + data.gameField[i * data.sizeField + j] + '.jpg" onclick="clickTile(' + (i * data.sizeField + j) + ')"/>');
+                            k.push(data.gameField[i * data.sizeField + j]);
+                        }
+                    }
+                    $(".countPlayer").text("");
+                    $(".countPlayer").append("<h3>Счет игрока:" + data.countPlayer + "</h3>");
+                },
+                error: errorFunc
+            });
+        }
+        // Клик по квадрату.
+        function clickTile(i)
+        {
+            
+            var testData = { 'intStr': i };
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/AjaxClickTile",
+                data: JSON.stringify(testData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function success_(data, status) {
+                    $(".matchGame").text("");
+                    refresh();
+                },
+                error: errorFunc
+            });
+            
+            
+        }
+        // Сохранить введенные имя пользователя в базу данных.
+        function saveUserName(nameUser) {
+            
+            var testData = { 'nameStr': nameUser };
+            $.ajax({
+                type: "POST",
+                url: "/Home/AjaxNameUser",
+                data: JSON.stringify(testData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function success_Func(data, status) {
+                    //alert("ok");
+                },
+                error: errorFunc
+            });
+        }
+       
+        function successFunc(data, status) {
+            alert(data);
+           
+        }
+
+        function errorFunc(errorData) {
+            alert('Ошибка' + errorData.responseText);
+        }
+
+        function saveField() {
+
+        }
+
+    </script>
+</head>
+

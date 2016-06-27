@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Редактор игры";
+}
+<h3>Редактор игры</h3>
+<br>
+<br>
+Количество полей для игры: <input type="number" name="numberField" id="numberField"><br>
+<br>
+<br>
+
+
+<a href="#" role="button" class="btn btn-default" onclick="saveField()">Сохранить количество полей</a>
+
+<script type="text/javascript">
+
+    function saveField(nameUser) {
+        var numberField = $("#numberField").val();
+        
+        var testData = { 'numStr': numberField };
+        $.ajax({
+            type: "POST",
+            url: "/Home/NumberField",
+            data: JSON.stringify(testData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function success_Func(data, status) {
+                //alert("ok");
+            },
+            error: errorFunc
+        });
+    }
+
+
+    function errorFunc(errorData) {
+        alert('Ошибка' + errorData.responseText);
+    }
+</script>
