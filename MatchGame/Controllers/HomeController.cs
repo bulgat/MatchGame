@@ -1,4 +1,5 @@
-﻿using MatchGame.Models;
+﻿using AutoMapper;
+using MatchGame.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,29 @@ namespace MatchGame.Controllers
     {
         // Модель.
         DataRecordEntities context = new DataRecordEntities();
-
+        private static MatchModel _matchModel;
+        private static IMapper _mapper;
         // Имя играющего сейчас пользователя.
         private static string _nameUser;
-
+        /*
+        public HomeController(IMapper mapper)
+        {
+            //_matchModel = new MatchModel();
+            //_mapper= mapper;
+        }
+        */
         public ActionResult Index()
         {
             int numberField = Convert.ToInt32(new XML().LoadAttributs("numberField.xml")[0]);
 
-            MatchModel.initGame(numberField);
+            Book book = new Book() { Name = "kol"};
+
+            _matchModel = new MatchModel();
+            _matchModel.initGame(numberField);
+
+ 
+           // _mapper = new 
+            //var person = _mapper.Map<BookView>(book);
 
             return View();
         }
@@ -89,7 +104,7 @@ namespace MatchGame.Controllers
             int x = Convert.ToInt32(intStr) / MatchModel.sizeField;
             int y = Convert.ToInt32(intStr) % MatchModel.sizeField;
 
-            MatchModel.clickGameField(x, y);
+            _matchModel.clickGameField(x, y);
 
             return Json(" жмякнули = "+ intStr);
 

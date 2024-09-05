@@ -1,4 +1,4 @@
-﻿// Создание кода T4 для модели "c:\users\kol\documents\visual studio 2015\Projects\MatchGame\MatchGame\Models\RecordModel.edmx" включено. 
+﻿// Создание кода T4 для модели "C:\Users\Pizza\Documents\GitHub\MatchGame\MatchGame\Models\RecordModel.edmx" включено. 
 // Чтобы включить формирование кода прежних версий, измените значение свойства "Стратегия создания кода" конструктора
 // на "Legacy ObjectContext". Это свойство доступно в окне "Свойства", если модель
 // открыта в конструкторе.

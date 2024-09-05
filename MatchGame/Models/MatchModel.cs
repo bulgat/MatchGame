@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+
 
 namespace MatchGame.Models
 {
@@ -36,10 +36,14 @@ namespace MatchGame.Models
         // Счет игрока.
         static public int scorePlayer = 0;
 
+        public MatchModel()
+        {
+
+        }
         /// <summary>
         /// Инициализация - начало игры.
         /// </summary>
-        public static void initGame(int numberField)
+        public void initGame(int numberField)
         {
             sizeField = numberField;
             scorePlayer = 0;
@@ -58,7 +62,7 @@ namespace MatchGame.Models
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void clickGameField(int x, int y)
+        public void clickGameField(int x, int y)
         {
             List<List<List<int>>> victory_ar = new List<List<List<int>>>();
             foreach (List<int[]> match in matrixMatch)
@@ -114,7 +118,7 @@ namespace MatchGame.Models
         /// Расчет победных очков, убирание правильных рядов, заполнение освободивших мест новыми карточками.
         /// </summary>
         /// <param name="victory_ar"></param>
-        private static void victoryGatherGameField(List<List<List<int>>> victory_ar)
+        private void victoryGatherGameField(List<List<List<int>>> victory_ar)
         {
             // Преобразование в один общий массив.
             int[,] victoryGameField = new int[sizeField, sizeField];
@@ -148,7 +152,7 @@ namespace MatchGame.Models
         /// <summary>
         /// Сдвиг полей под действием гравитации.
         /// </summary>
-        private static void offsetGameField()
+        private void offsetGameField()
         {
             // К черту рекурсию.
             for (int x = 0; x < sizeField; x++)
@@ -165,7 +169,7 @@ namespace MatchGame.Models
         /// Сдвиг полей под действием гравитации. Подчиненный метод.
         /// </summary>
         /// <param name="ii"></param>
-        private static void offsetFieldVertical(int ii)
+        private void offsetFieldVertical(int ii)
         {
             int color = gameField[0, ii];
             for (int j = 1; j < sizeField; j++)
@@ -184,7 +188,7 @@ namespace MatchGame.Models
         /// <summary>
         /// Заполнить все пустые поля. Мусором.
         /// </summary>
-        private static void fillNullFieldGameField()
+        private void fillNullFieldGameField()
         {
             Random random = new Random();
 
