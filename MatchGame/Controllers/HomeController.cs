@@ -17,27 +17,29 @@ namespace MatchGame.Controllers
         private static IMapper _mapper;
         // Имя играющего сейчас пользователя.
         private static string _nameUser;
-        /*
-        public HomeController(IMapper mapper)
-        {
-            //_matchModel = new MatchModel();
-            //_mapper= mapper;
-        }
-        */
+
         public ActionResult Index()
         {
             int numberField = Convert.ToInt32(new XML().LoadAttributs("numberField.xml")[0]);
 
-            Book book = new Book() { Name = "kol"};
+            Book book = new Book() { Name = "kol" };
 
             _matchModel = new MatchModel();
             _matchModel.initGame(numberField);
 
- 
-           // _mapper = new 
+            List<int> list = new List<int>() { 5, 7, 8, 90, 77 };
+            var kol = Where(list, Test).ToList();
+            // _mapper = new 
             //var person = _mapper.Map<BookView>(book);
 
             return View();
+        }
+
+        bool Test(int i) {
+            if (i > 9) {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -75,9 +77,9 @@ namespace MatchGame.Controllers
             try
             {
                 var card = (from a in context.TableRecord where a.name == _nameUser orderby a.Id descending select a).FirstOrDefault();
-            card.score = MatchModel.scorePlayer;
-            UpdateModel(card);
-            context.SaveChanges();
+                card.score = MatchModel.scorePlayer;
+                UpdateModel(card);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -85,11 +87,12 @@ namespace MatchGame.Controllers
 
             }
             // Отправляем модель игровое поле с изменными условиями.
-            return Json(new MathField() {
-               countPlayer = MatchModel.scorePlayer,
-               sizeField = MatchModel.sizeField,
-               gameField  = MatchModel.gameField
-           });
+            return Json(new MathField()
+            {
+                countPlayer = MatchModel.scorePlayer,
+                sizeField = MatchModel.sizeField,
+                gameField = MatchModel.gameField
+            });
 
         }
         /// <summary>
@@ -106,7 +109,7 @@ namespace MatchGame.Controllers
 
             _matchModel.clickGameField(x, y);
 
-            return Json(" жмякнули = "+ intStr);
+            return Json(" жмякнули = " + intStr);
 
         }
         /// <summary>
@@ -120,13 +123,14 @@ namespace MatchGame.Controllers
             _nameUser = nameStr;
             try
             {
-                TableRecord card = new TableRecord() { name = nameStr, score=0 };
+                TableRecord card = new TableRecord() { name = nameStr, score = 0 };
                 context.TableRecord.Add(card);
                 context.SaveChanges();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Error "+ex);
-                return Json(" error "+ex);
+                System.Diagnostics.Debug.WriteLine("Error " + ex);
+                return Json(" error " + ex);
             }
             return Json(" ок");
 
@@ -138,6 +142,15 @@ namespace MatchGame.Controllers
             return Json(" ок");
         }
 
-
+        public IEnumerable<int> Where(IEnumerable<int> list, Func<int,bool> func) {
+            foreach (var item in list)
+            {
+                if (func(item))
+                {
+                    yield return item;
+                }
+            }
         }
+
+    }
 }
